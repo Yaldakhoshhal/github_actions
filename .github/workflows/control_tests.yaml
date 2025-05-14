@@ -1,0 +1,33 @@
+name: Pytest & flake8 control Push
+
+on:
+  push:  # This will trigger the workflow when code is pushed to the repository
+    branches:
+      - main  # Only run on the 'main' branch, you can change this if necessary
+
+jobs:
+  qa:
+    name: Check tests
+    runs-on: ubuntu-20.04  # You can also use other versions like ubuntu-latest, but let's stick to 20.04 for now
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # This step checks out your code in the workflow
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # Or whichever version of Python you want to use
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest flake8  # Install pytest and flake8 for testing and linting
+
+      - name: Run tests
+        run: |
+          pytest test_example.py  # Run your test file
+
+      - name: Run flake8
+        run: |
+          flake8 test_example.py  # Run flake8 to check for linting issues
